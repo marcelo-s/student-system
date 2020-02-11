@@ -68,7 +68,7 @@ EntityNotFoundException
 ```
  This exception is thrown whenever an invalid Id (non-existent) is passed as a parameter
 
-##Build
+## Build
 The whole project is available as a .jar file on the target/ folder
 
 
