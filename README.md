@@ -15,12 +15,12 @@ Deliverables:
 - H2
 - JPA
 
-#Framework
+# Framework
 Spring Framework
 
-#Architecture
+# Architecture
 
-###Entities
+### Entities
 - Student: Entity that represents Students. A student can be attend many classes
 
 - ClassOfStudents: Entity that represents a class. A class can have many students.
@@ -31,7 +31,7 @@ This was made in order to add more attributes in the future for this relationshi
 or in the case that a same student has attended the same class multiple times.
  
 
-###API Layer - Controllers :
+### API Layer - Controllers :
 - StudentController: Has the root mapping : "/students"
 This controller handles the different endpoints for the CRUD operations on Students.
 Also this controller handles adding a student to a specific class.
@@ -39,12 +39,12 @@ Also this controller handles adding a student to a specific class.
 - ClassOfStudentsController: Has the root mapping : "/classes"
 This controller handles the different endpoints for the CRUD operations on ClassOfStudents.
 
-###Service Layer - Services
+### Service Layer - Services
 - Interfaces: There are 2 interfaces for Students and ClassOfStudents that define the service functionalities.
 - Implementations: There are 2 implementations, one for each interface. These implementations use the repositories to
 respond to the different API operations. 
 
-###Persistence Layer -  Repository, Model
+### Persistence Layer -  Repository, Model
 
 - Models: 3 main models : Student, ClassOfStudents and ClassAttendance.
 
@@ -59,7 +59,7 @@ LoadDB : Class with preloaded data to test
 StudentRepository, ClassOfStudentsRepository and ClassAttendanceRepository have different methods to interact
 with the Database
 
-##Exception Handling
+## Exception Handling
 Used the @ControllerAdvice annotation to have control over the different exceptions across the whole application
 
 Specific errors handled:
