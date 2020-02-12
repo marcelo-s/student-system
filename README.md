@@ -1,12 +1,6 @@
-# Problem 1
-Create a REST API for a system that assigns students to classes.  API can be used by both a UI and programmatically by other systems.
+# Student - Class System
 
-Deliverables:
-
-1.  (required) java code via a GitHub repository.
-2.  (required) a short write-up  around what technologies/frameworks you are/would use in implementing various parts/tiers of this system.
-3.  (optional) deployable/runnable war/jar.
-4.  (optional) API documentation
+REST API for a system that assigns students to classes.  API can be used by both a UI and programmatically by other systems.
 
 # Technologies
 - Java 11
@@ -38,6 +32,12 @@ Also this controller handles adding a student to a specific class.
 
 - ClassOfStudentsController: Has the root mapping : "/classes"
 This controller handles the different endpoints for the CRUD operations on ClassOfStudents.
+
+### API
+
+The documentation of the API is available in Swagger:
+
+https://app.swaggerhub.com/apis/marcelo-s/student.system/1.0.0#/
 
 ### Service Layer - Services
 - Interfaces: There are 2 interfaces for Students and ClassOfStudents that define the service functionalities.

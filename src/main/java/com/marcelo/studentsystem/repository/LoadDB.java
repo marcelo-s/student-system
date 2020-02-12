@@ -27,7 +27,7 @@ public class LoadDB {
 
             // Create Classes
             ClassOfStudents class1 = classRepository.save(new ClassOfStudents("Algorithms", "Basic algorithms class"));
-            ClassOfStudents class2 =  classRepository.save(new ClassOfStudents("Databases", "Databases basics"));
+            ClassOfStudents class2 = classRepository.save(new ClassOfStudents("Databases", "Databases basics"));
 
 
             // Create joinTable Student - Classes

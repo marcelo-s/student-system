@@ -1,9 +1,8 @@
 package com.marcelo.studentsystem.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +21,7 @@ public class ClassOfStudents {
     @GeneratedValue
     private Long id;
     @NotBlank(message = "Title is mandatory")
-    @Size(min=5, message="Title should have at least 5 characters")
+    @Size(min = 5, message = "Title should have at least 5 characters")
     private String title;
     @NotBlank(message = "description is mandatory")
     private String description;
