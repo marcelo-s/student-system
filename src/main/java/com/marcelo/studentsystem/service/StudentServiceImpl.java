@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -43,12 +43,10 @@ public class StudentServiceImpl implements StudentService {
         studentRepository
                 .findById(id)
                 .orElseThrow(() -> new EntityIdNotFoundException(id, Constants.ENTITY_STUDENT));
-        List<ClassOfStudentsProjection> attendances = classAttendanceRepository.findAllByStudentId(id);
-        List<ClassOfStudents> classes = new ArrayList<>();
-        for (ClassOfStudentsProjection attendance : attendances) {
-            classes.add(attendance.getClassOfStudents());
-        }
-        return classes;
+        return classAttendanceRepository.findAllByStudentId(id)
+                .stream()
+                .map(ClassOfStudentsProjection::getClassOfStudents)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -57,14 +55,18 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student edit(Student newStudent, Long id) {
-        return studentRepository.findById(id)
-                .map(student -> {
-                    student.setFirstName(newStudent.getFirstName());
-                    student.setLastName(newStudent.getLastName());
-                    return studentRepository.save(student);
-                })
-                .orElseThrow(() -> new EntityIdNotFoundException(id, Constants.ENTITY_STUDENT));
+    public void edit(Student newStudent, Long id) {
+        studentRepository.findById(id)
+                .ifPresentOrElse(student -> editStudent(student, newStudent),
+                        () -> {
+                            throw new EntityIdNotFoundException(id, Constants.ENTITY_STUDENT);
+                        });
+    }
+
+    private void editStudent(Student currentStudent, Student newStudent) {
+        currentStudent.setFirstName(newStudent.getFirstName());
+        currentStudent.setLastName(newStudent.getLastName());
+        studentRepository.save(currentStudent);
     }
 
     @Override

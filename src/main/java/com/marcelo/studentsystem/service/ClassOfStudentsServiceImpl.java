@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ClassOfStudentsServiceImpl implements ClassOfStudentsService {
@@ -32,12 +32,10 @@ public class ClassOfStudentsServiceImpl implements ClassOfStudentsService {
     public List<Student> findAllStudentsOfClass(Long id) {
         classOfStudentsRepository.findById(id)
                 .orElseThrow(() -> new EntityIdNotFoundException(id, Constants.ENTITY_CLASS));
-        List<StudentProjection> attendances = classAttendanceRepository.findAllByClassOfStudentsId(id);
-        List<Student> students = new ArrayList<>();
-        for (StudentProjection attendance : attendances) {
-            students.add(attendance.getStudent());
-        }
-        return students;
+        return classAttendanceRepository.findAllByClassOfStudentsId(id)
+                .stream()
+                .map(StudentProjection::getStudent)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -52,14 +50,19 @@ public class ClassOfStudentsServiceImpl implements ClassOfStudentsService {
     }
 
     @Override
-    public ClassOfStudents edit(ClassOfStudents newClassOfStudents, Long id) {
-        return classOfStudentsRepository.findById(id)
-                .map(classOfStudents -> {
-                    classOfStudents.setTitle(newClassOfStudents.getTitle());
-                    classOfStudents.setDescription(newClassOfStudents.getDescription());
-                    return classOfStudentsRepository.save(classOfStudents);
-                })
-                .orElseThrow(() -> new EntityIdNotFoundException(id, Constants.ENTITY_CLASS));
+    public void edit(ClassOfStudents newClassOfStudents, Long id) {
+        classOfStudentsRepository.findById(id)
+                .ifPresentOrElse(
+                        (currentClassOfStudents) -> editClassOfStudents(currentClassOfStudents, newClassOfStudents),
+                        () -> {
+                            throw new EntityIdNotFoundException(id, Constants.ENTITY_CLASS);
+                        });
+    }
+
+    private void editClassOfStudents(ClassOfStudents currentClassOfStudents, ClassOfStudents newClassOfStudents) {
+        currentClassOfStudents.setTitle(newClassOfStudents.getTitle());
+        currentClassOfStudents.setDescription(newClassOfStudents.getDescription());
+        classOfStudentsRepository.save(currentClassOfStudents);
     }
 
     @Override

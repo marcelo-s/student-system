@@ -14,7 +14,7 @@ public interface ClassOfStudentsService {
 
     ClassOfStudents create(ClassOfStudents classOfStudents);
 
-    ClassOfStudents edit(ClassOfStudents classOfStudents, Long id);
+    void edit(ClassOfStudents classOfStudents, Long id);
 
     void delete(Long id);
 }

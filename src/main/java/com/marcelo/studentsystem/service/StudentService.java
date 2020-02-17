@@ -14,7 +14,7 @@ public interface StudentService {
 
     Student create(Student student);
 
-    Student edit(Student student, Long id);
+    void edit(Student student, Long id);
 
     void delete(Long id);
 

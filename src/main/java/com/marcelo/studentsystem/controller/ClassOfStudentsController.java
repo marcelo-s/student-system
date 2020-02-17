@@ -5,7 +5,6 @@ import com.marcelo.studentsystem.model.Student;
 import com.marcelo.studentsystem.service.ClassOfStudentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,14 +19,13 @@ class ClassOfStudentsController {
     private ClassOfStudentsService classOfStudentsService;
 
     @GetMapping
-    public List<com.marcelo.studentsystem.model.ClassOfStudents> findAll() {
+    public List<ClassOfStudents> findAll() {
         return classOfStudentsService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClassOfStudents> findAll(@PathVariable Long id) {
-        ClassOfStudents classOfStudents = classOfStudentsService.find(id);
-        return new ResponseEntity<>(classOfStudents, HttpStatus.OK);
+    public ClassOfStudents findAll(@PathVariable Long id) {
+        return classOfStudentsService.find(id);
     }
 
     @GetMapping("/{id}/students")
@@ -36,21 +34,21 @@ class ClassOfStudentsController {
     }
 
     @PostMapping
-    public ResponseEntity<ClassOfStudents> create(@Valid @RequestBody ClassOfStudents classOfStudents) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ClassOfStudents create(@Valid @RequestBody ClassOfStudents classOfStudents) {
         classOfStudents.setId(null);
-        ClassOfStudents classOfStudentsCreated = classOfStudentsService.create(classOfStudents);
-        return new ResponseEntity<>(classOfStudentsCreated, HttpStatus.CREATED);
+        return classOfStudentsService.create(classOfStudents);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClassOfStudents> edit(@Valid @RequestBody ClassOfStudents newClassOfStudents, @NotBlank @PathVariable Long id) {
-        ClassOfStudents editClass = classOfStudentsService.edit(newClassOfStudents, id);
-        return new ResponseEntity<>(editClass, HttpStatus.OK);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void edit(@Valid @RequestBody ClassOfStudents newClassOfStudents, @NotBlank @PathVariable Long id) {
+        classOfStudentsService.edit(newClassOfStudents, id);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
         classOfStudentsService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
