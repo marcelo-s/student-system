@@ -5,6 +5,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * Entity class for classAttendance
+ * This class is created as a separated class that models a student to a class relationship
+ */
 @Data
 @Entity
 @NoArgsConstructor

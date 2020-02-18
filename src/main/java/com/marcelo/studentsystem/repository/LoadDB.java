@@ -11,9 +11,20 @@ import org.springframework.context.annotation.Configuration;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that initializes the database
+ */
 @Slf4j
 @Configuration
 public class LoadDB {
+
+    /**
+     *
+     * @param studentRepository repository of students
+     * @param classRepository repository of classOfStudents
+     * @param attendanceRepository repository of attendanceOfStudents
+     * @return a runner that initializes the script
+     */
     @Bean
     CommandLineRunner initStudentsDatabase(StudentRepository studentRepository, ClassOfStudentsRepository classRepository, ClassAttendanceRepository attendanceRepository) {
         return args -> {

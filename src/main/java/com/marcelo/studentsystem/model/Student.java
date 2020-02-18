@@ -11,6 +11,9 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
+/**
+ * Entity class for a student
+ */
 @Data
 @Entity
 @NoArgsConstructor

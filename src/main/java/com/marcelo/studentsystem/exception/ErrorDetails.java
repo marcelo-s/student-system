@@ -5,6 +5,9 @@ import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
+/**
+ * Custom class for gathering argument validation errors
+ */
 @Data
 public class ErrorDetails {
     private HttpStatus status;

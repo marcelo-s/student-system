@@ -5,6 +5,9 @@ import com.marcelo.studentsystem.model.Student;
 
 import java.util.List;
 
+/**
+ * Interface for the classOfStudents service
+ */
 public interface ClassOfStudentsService {
     List<ClassOfStudents> findAll();
 
