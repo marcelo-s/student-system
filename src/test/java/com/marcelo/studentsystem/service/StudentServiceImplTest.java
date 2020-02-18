@@ -129,7 +129,9 @@ class StudentServiceImplTest {
         Mockito.when(studentRepository.save(student))
                 .thenReturn(student);
         studentService.edit(student, id);
+        Mockito.verify(studentRepository, Mockito.atMostOnce()).findById(id);
         Mockito.verify(studentRepository, Mockito.atMostOnce()).save(student);
+        Mockito.verifyNoMoreInteractions(studentRepository);
     }
 
     @Test
@@ -139,14 +141,33 @@ class StudentServiceImplTest {
         Mockito.when(studentRepository.findById(id))
                 .thenReturn(Optional.empty());
         assertThrows(EntityIdNotFoundException.class, () -> studentService.edit(student, id));
+        InOrder inOrder = Mockito.inOrder(classAttendanceRepository, studentRepository);
+        inOrder.verify(studentRepository).findById(id);
+        inOrder.verifyNoMoreInteractions();
     }
 
     @Test
     void delete() {
-        studentService.delete(1L);
+        long id = 1;
+        Student student = new Student("john", "cena");
+        student.setId(id);
+        Mockito.when(studentRepository.findById(id))
+                .thenReturn(Optional.of(student));
+        studentService.delete(id);
         InOrder inOrder = Mockito.inOrder(classAttendanceRepository, studentRepository);
-        inOrder.verify(classAttendanceRepository).deleteAllByStudentId(1L);
-        inOrder.verify(studentRepository).deleteById(1L);
+        inOrder.verify(classAttendanceRepository).deleteAllByStudentId(id);
+        inOrder.verify(studentRepository).deleteById(id);
+    }
+
+    @Test
+    void deleteNotFound() {
+        long id = 1;
+        Mockito.when(studentRepository.findById(id))
+                .thenReturn(Optional.empty());
+        assertThrows(EntityIdNotFoundException.class, () -> studentService.delete(id));
+        InOrder inOrder = Mockito.inOrder(classAttendanceRepository, studentRepository);
+        inOrder.verify(studentRepository).findById(1L);
+        inOrder.verifyNoMoreInteractions();
     }
 
     @Test
@@ -171,5 +192,34 @@ class StudentServiceImplTest {
         inOrder.verify(studentRepository).findById(studentId);
         inOrder.verify(classOfStudentsRepository).findById(classId);
         inOrder.verify(classAttendanceRepository).save(classAttendance);
+    }
+
+    @Test
+    void addStudentToClassStudentNotExists() {
+        long studentId = 1;
+        long classId = 1;
+
+        ClassOfStudents classOfStudents = new ClassOfStudents("algorithms", "basic algorithms");
+
+        Mockito.when(studentRepository.findById(studentId))
+                .thenReturn(Optional.empty());
+        Mockito.when(classOfStudentsRepository.findById(classId))
+                .thenReturn(Optional.of(classOfStudents));
+
+        assertThrows(EntityIdNotFoundException.class, () -> studentService.addStudentToClass(studentId, classId));
+    }
+
+    @Test
+    void addStudentToClassClassOfStudentsNotExists() {
+        long studentId = 1;
+        long classId = 1;
+        Student student = new Student("john", "cena");
+
+        Mockito.when(studentRepository.findById(studentId))
+                .thenReturn(Optional.of(student));
+        Mockito.when(classOfStudentsRepository.findById(classId))
+                .thenReturn(Optional.empty());
+
+        assertThrows(EntityIdNotFoundException.class, () -> studentService.addStudentToClass(studentId, classId));
     }
 }

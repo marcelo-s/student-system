@@ -24,7 +24,7 @@ class ClassOfStudentsController {
     }
 
     @GetMapping("/{id}")
-    public ClassOfStudents findAll(@PathVariable Long id) {
+    public ClassOfStudents find(@PathVariable Long id) {
         return classOfStudentsService.find(id);
     }
 

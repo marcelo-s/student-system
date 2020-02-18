@@ -26,7 +26,7 @@ public class RestResponseEntityExceptionHandler
     }
 
     @ExceptionHandler(value = {EntityIdNotFoundException.class})
-    protected ResponseEntity<Object> handleStudentNotFoundException(RuntimeException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleEntityNotFoundException(RuntimeException ex, WebRequest request) {
         String bodyOfResponse = ex.getMessage();
         return handleExceptionInternal(
                 ex,

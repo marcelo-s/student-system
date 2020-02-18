@@ -72,8 +72,18 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @Transactional
     public void delete(Long id) {
-        classAttendanceRepository.deleteAllByStudentId(id);
-        studentRepository.deleteById(id);
+        studentRepository
+                .findById(id)
+                .ifPresentOrElse(
+                        this::deleteStudent,
+                        () -> {
+                            throw new EntityIdNotFoundException(id, Constants.ENTITY_STUDENT);
+                        });
+    }
+
+    private void deleteStudent(Student student) {
+        classAttendanceRepository.deleteAllByStudentId(student.getId());
+        studentRepository.deleteById(student.getId());
     }
 
     @Override
